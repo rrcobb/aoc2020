@@ -1,7 +1,6 @@
 use structopt::StructOpt;
 use anyhow::{Context, Result, bail, ensure};
 use std::str::FromStr;
-use std::convert::TryInto;
 
 fn one(path: Option<std::path::PathBuf>) -> Result<()> {
     let unwrapped_path = path.context("This example needs a path").unwrap();
@@ -30,8 +29,8 @@ fn one(path: Option<std::path::PathBuf>) -> Result<()> {
 
 #[derive(Debug)]
 struct PasswordDay {
-    min: u8,
-    max: u8,
+    min: usize,
+    max: usize,
     letter: char,
     password: String,
 }
@@ -44,9 +43,9 @@ impl FromStr for PasswordDay {
         ensure!(parts.len() == 3, "must have three space separated parts to a line");
 
         let range = parts[0].split("-")
-            .map(|s| s.parse::<u8>())
+            .map(|s| s.parse::<usize>())
             .filter_map(Result::ok)
-            .collect::<Vec<u8>>();
+            .collect::<Vec<usize>>();
         let min = range[0];
         let max = range[1];
 
@@ -62,12 +61,8 @@ impl FromStr for PasswordDay {
 
 impl PasswordDay {
     fn valid(&self) -> bool {
-        let count = self.count_letter();
-        count >= self.min && count <= self.max
-    }
-
-    fn count_letter(&self) -> u8 {
-        self.password.matches(self.letter).count().try_into().unwrap()
+        (self.password.chars().nth(self.min - 1) == Some(self.letter)) ^ 
+            (self.password.chars().nth(self.max - 1) == Some(self.letter))
     }
 }
 
