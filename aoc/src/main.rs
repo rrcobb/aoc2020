@@ -15,9 +15,11 @@ fn one(path: Option<std::path::PathBuf>) -> Result<()> {
 
     'outer: for num in &nums {
         for other in &nums {
-            if num + other == 2020 {
-                println!("{}", num * other);
-                break 'outer;
+            for third in &nums {
+                if num + other + third == 2020 {
+                    println!("{}", num * other * third);
+                    break 'outer;
+                }
             }
         }
     }
