@@ -9,7 +9,7 @@ macro_rules! import {
     };
 }
 
-import!(one, two, three, four);
+import!(one, two, three, four, five);
 
 #[derive(StructOpt)]
 struct Cli {
@@ -29,6 +29,8 @@ fn main() {
         "three" => three(args.path),
         "4" => four(args.path),
         "four" => four(args.path),
+        "5" => five(args.path),
+        "five" => five(args.path),
         _ => {
             println!("didn't match");
             Ok(())
