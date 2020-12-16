@@ -1,4 +1,4 @@
-use anyhow::{Context, Result, ensure};
+use anyhow::{Result, ensure};
 use std::str::FromStr;
 
 #[derive(Debug)]
@@ -45,12 +45,9 @@ impl Seat {
 }
 
 
-pub fn five(path: Option<std::path::PathBuf>) -> Result<()> {
-    let unwrapped_path = path.context("This example needs a path").unwrap();
-    let content = std::fs::read_to_string(&unwrapped_path)
-        .with_context(|| 
-            format!("could not read from {}", unwrapped_path.display())
-        ).unwrap();
+pub fn five() -> Result<()> {
+    let content = include_str!("input/five.txt");
+
     let seats = content
         .lines()
         .map(|line| line.parse::<Seat>())
@@ -59,7 +56,7 @@ pub fn five(path: Option<std::path::PathBuf>) -> Result<()> {
     let mut ids = seats.iter().map(|s| s.id() ).collect::<Vec<usize>>();
     ids.sort();
     for (i, id) in ids.iter().enumerate() {
-        if (i > 0) {
+        if i > 0 {
             if id - 1 != ids[i -1] {
                 println!("{}", id -1);
             }

@@ -1,11 +1,8 @@
-use anyhow::{Context, Result};
+use anyhow::Result;
 
-pub fn three(path: Option<std::path::PathBuf>) -> Result<()> {
-    let unwrapped_path = path.context("This example needs a path").unwrap();
-    let content = std::fs::read_to_string(&unwrapped_path)
-        .with_context(|| 
-            format!("could not read from {}", unwrapped_path.display())
-        )?;
+pub fn three() -> Result<()> {
+    let content = include_str!("input/three.txt");
+
     let lines: Vec<&str> = content
         .trim_end()
         .split("\n")

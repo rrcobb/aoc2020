@@ -1,9 +1,7 @@
-use anyhow::{Context, Result};
+use anyhow::{Result};
 
-pub fn one(path: Option<std::path::PathBuf>) -> Result<()> {
-    let unwrapped_path = path.context("This example needs a path").unwrap();
-    let content = std::fs::read_to_string(&unwrapped_path)
-        .with_context(|| format!("could not read from {}", unwrapped_path.display()))?;
+pub fn one() -> Result<()> {
+    let content = include_str!("input/one.txt");
 
     // turn content from string to array of nums
     let nums = content

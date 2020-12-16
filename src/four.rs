@@ -1,4 +1,4 @@
-use anyhow::{Context, Result};
+use anyhow::Result;
 use std::str::FromStr;
 use regex::Regex;
 
@@ -170,12 +170,9 @@ impl Passport {
     }
 }
 
-pub fn four(path: Option<std::path::PathBuf>) -> Result<()> {
-    let unwrapped_path = path.context("This example needs a path").unwrap();
-    let content = std::fs::read_to_string(&unwrapped_path)
-        .with_context(|| 
-            format!("could not read from {}", unwrapped_path.display())
-        ).unwrap();
+pub fn four() -> Result<()> {
+    let content = include_str!("input/four.txt");
+
     let passports = content
         .split("\n\n")
         .map(|block| block.parse::<Passport>())

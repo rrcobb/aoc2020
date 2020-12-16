@@ -1,4 +1,4 @@
-use anyhow::{Context, Result, bail, ensure};
+use anyhow::{Result, bail, ensure};
 use std::str::FromStr;
 
 #[derive(Debug)]
@@ -41,12 +41,8 @@ impl PasswordDay {
 }
 
 
-pub fn two(path: Option<std::path::PathBuf>) -> Result<()> {
-    let unwrapped_path = path.context("This example needs a path").unwrap();
-    let content = std::fs::read_to_string(&unwrapped_path)
-        .with_context(|| 
-            format!("could not read from {}", unwrapped_path.display())
-        )?;
+pub fn two() -> Result<()> {
+    let content = include_str!("input/two.txt");
 
     let valid_pwds: usize = content
         .split("\n")
