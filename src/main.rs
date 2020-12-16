@@ -1,5 +1,3 @@
-#![feature(iterator_fold_self)]
-
 use structopt::StructOpt;
 use clap::arg_enum;
 

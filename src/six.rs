@@ -1,13 +1,13 @@
 use anyhow::Result;
 use std::str::FromStr;
-use std::collections::HashSet;
+use std::collections::HashMap;
 
 // group
 // lines of characters
 // set of unique characters in group
 struct Group {
     raw: String,
-    characters: HashSet<char>,
+    characters: Vec<char>,
 }
 
 impl FromStr for Group {
@@ -15,15 +15,24 @@ impl FromStr for Group {
 
 
     fn from_str(string: &str) -> Result<Self, Self::Err> {
-        let characters = string
-            .lines()
-            .map(|line|
-                line.chars()
-                .filter(|c| !c.is_whitespace())
-                .collect::<HashSet<char>>()
-            ).fold_first(|memo, set| {
-                set.intersection(&memo).cloned().collect()
-            }).unwrap();
+        let chas = string
+            .chars()
+            .filter(|c| !c.is_whitespace());
+        
+        let total = string.lines().count();
+
+        let mut map: HashMap<char, usize> = HashMap::new();
+        for cha in chas.into_iter() {
+            match map.get(&cha) {
+                Some(count) => map.insert(cha.clone(), count + 1),
+                None => map.insert(cha.clone(), 1),
+            };
+        }
+
+        let characters = map.iter()
+            .filter(|i| i.1 == &total)
+            .map(|(cha, count)| cha.clone())
+            .collect();
 
         Ok(Group {
             raw: string.into(),
