@@ -1,3 +1,5 @@
+#![feature(iterator_fold_self)]
+
 use structopt::StructOpt;
 use clap::arg_enum;
 
@@ -10,12 +12,12 @@ macro_rules! import {
     };
 }
 
-import!(one, two, three, four, five);
+import!(one, two, three, four, five, six);
 
 arg_enum! {
     #[derive(Debug)]
     enum Day {
-        One, Two, Three, Four, Five
+        One, Two, Three, Four, Five, Six
     }
 }
 
@@ -34,6 +36,7 @@ fn main() {
         Three => three(),
         Four => four(),
         Five => five(),
+        Six => six(),
     };
     ()
 }
