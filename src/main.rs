@@ -1,5 +1,5 @@
-use structopt::StructOpt;
 use clap::arg_enum;
+use structopt::StructOpt;
 
 macro_rules! import {
     ( $( $x:ident ),* ) => {
@@ -10,12 +10,12 @@ macro_rules! import {
     };
 }
 
-import!(one, two, three, four, five, six);
+import!(one, two, three, four, five, six, seven);
 
 arg_enum! {
     #[derive(Debug)]
     enum Day {
-        One, Two, Three, Four, Five, Six
+        One, Two, Three, Four, Five, Six, Seven
     }
 }
 
@@ -35,6 +35,6 @@ fn main() {
         Four => four(),
         Five => five(),
         Six => six(),
+        Seven => seven(),
     };
-    ()
 }

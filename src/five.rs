@@ -18,7 +18,7 @@ impl FromStr for Seat {
         for (i, c) in raw_line[0..7].chars().enumerate() {
             match c {
                 'F' => {},
-                'B' => { row = row + two.pow(6 - i as u32) },
+                'B' => { row += two.pow(6 - i as u32) },
                 _ => {}
             }
         }
@@ -26,7 +26,7 @@ impl FromStr for Seat {
         for (i, c) in raw_line[7..10].chars().enumerate() {
             match c {
                 'L' => {},
-                'R' => { column = column + two.pow(2 - i as u32) },
+                'R' => { column += two.pow(2 - i as u32) },
                 _ => {}
             }
         }
@@ -54,12 +54,10 @@ pub fn five() -> Result<()> {
         .map(|r| r.unwrap())
         .collect::<Vec<Seat>>();
     let mut ids = seats.iter().map(|s| s.id() ).collect::<Vec<usize>>();
-    ids.sort();
+    ids.sort_unstable();
     for (i, id) in ids.iter().enumerate() {
-        if i > 0 {
-            if id - 1 != ids[i -1] {
-                println!("{}", id -1);
-            }
+        if i > 0 && id - 1 != ids[i -1] {
+            println!("{}", id -1);
         }
     }
     Ok(())

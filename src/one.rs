@@ -5,7 +5,7 @@ pub fn one() -> Result<()> {
 
     // turn content from string to array of nums
     let nums = content
-        .split("\n")
+        .split('\n')
         .map(|s| s.parse::<i32>())
         .filter_map(Result::ok)
         .collect::<Vec<i32>>();

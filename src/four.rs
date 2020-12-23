@@ -20,10 +20,10 @@ impl FromStr for Passport {
     fn from_str(line: &str) -> Result<Self, Self::Err> {
         let parts: Vec<(&str, &str)> = line
             .split_whitespace()
-            .map(|part| part.split(":"))
+            .map(|part| part.split(':'))
             .map(|mut splits| {
-                let key = splits.nth(0); 
-                let val = splits.nth(0);
+                let key = splits.next(); 
+                let val = splits.next();
                 (key.unwrap(), val.unwrap())
             })
             .collect();

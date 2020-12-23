@@ -6,7 +6,6 @@ use std::collections::HashMap;
 // lines of characters
 // set of unique characters in group
 struct Group {
-    raw: String,
     characters: Vec<char>,
 }
 
@@ -23,20 +22,17 @@ impl FromStr for Group {
 
         let mut map: HashMap<char, usize> = HashMap::new();
         for cha in chas.into_iter() {
-            match map.get(&cha) {
-                Some(count) => map.insert(cha.clone(), count + 1),
-                None => map.insert(cha.clone(), 1),
-            };
+            let val = map.entry(cha).or_insert(0);
+            *val += 1;
         }
 
         let characters = map.iter()
             .filter(|i| i.1 == &total)
-            .map(|(cha, count)| cha.clone())
+            .map(|(cha, _count)| *cha)
             .collect();
 
         Ok(Group {
-            raw: string.into(),
-            characters: characters,
+            characters,
         })
     }
 }

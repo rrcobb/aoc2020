@@ -13,17 +13,17 @@ impl FromStr for PasswordDay {
     type Err = anyhow::Error;
 
     fn from_str(line: &str) -> Result<Self, Self::Err> {
-        let parts: Vec<&str> = line.split(" ").collect();
+        let parts: Vec<&str> = line.split(' ').collect();
         ensure!(parts.len() == 3, "must have three space separated parts to a line");
 
-        let range = parts[0].split("-")
+        let range = parts[0].split('-')
             .map(|s| s.parse::<usize>())
             .filter_map(Result::ok)
             .collect::<Vec<usize>>();
         let min = range[0];
         let max = range[1];
 
-        let letter = match parts[1].chars().nth(0) {
+        let letter = match parts[1].chars().next() {
             Some(l) => l,
             None => bail!("no letter in the line"),
         };
@@ -45,7 +45,7 @@ pub fn two() -> Result<()> {
     let content = include_str!("input/two.txt");
 
     let valid_pwds: usize = content
-        .split("\n")
+        .split('\n')
         .map(|s| s.parse::<PasswordDay>())
         .filter_map(Result::ok)
         .filter(|pwd| pwd.valid())

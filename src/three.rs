@@ -5,7 +5,7 @@ pub fn three() -> Result<()> {
 
     let lines: Vec<&str> = content
         .trim_end()
-        .split("\n")
+        .split('\n')
         .collect();
 
     let total: usize = [
@@ -23,19 +23,19 @@ pub fn three() -> Result<()> {
     Ok(())
 }
 
-fn count_trees(lines: &Vec<&str>, right: usize, down: usize) -> usize {
+fn count_trees(lines: &[&str], right: usize, down: usize) -> usize {
     let line_len = lines[0].len();
 
     let mut count = 0;
     let mut pos = 0;
-    for line in lines.into_iter().step_by(down) {
+    for line in lines.iter().step_by(down) {
         if line.chars().nth(pos) == Some('#') {
             count += 1;
         }
         // increment with line wrapping
-        pos = pos + right;
+        pos += right;
         if pos >= line_len {
-            pos = pos - line_len
+            pos -= line_len
         }
     }
     println!("{}, {}: {}", right, down, count);
