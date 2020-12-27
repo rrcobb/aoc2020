@@ -2,6 +2,7 @@ use anyhow::Result;
 use std::str::FromStr;
 use std::collections::HashMap;
 use regex::Regex;
+use std::iter;
 
 type Color = String;
 
@@ -39,20 +40,35 @@ impl FromStr for Rule {
 
 pub fn seven() -> Result<()> {
     let content = include_str!("input/seven.txt");
-    let mut child_to_parents: HashMap<Color, Vec<Color>> = HashMap::new();
-    let rules: Vec<Rule> = content
+    let mut parents_to_children: HashMap<Color, Vec<(Color, u32)>> = HashMap::new();
+    let _rules: Vec<Rule> = content
         .lines()
         .map(str::parse::<Rule>)
         .filter_map(Result::ok)
         .map(|rule| {
-            for (child, _) in rule.children.iter() {
-                child_to_parents.entry(child.to_string()).or_insert(vec![]);
-                child_to_parents.get_mut(child).unwrap().push(rule.parent.clone());
+            for (child, count) in rule.children.iter() {
+                parents_to_children.entry(rule.parent.to_string()).or_insert(vec![]);
+                parents_to_children.get_mut(&rule.parent).unwrap().push((child.clone(), *count));
             }
             rule
         })
         .collect();
-    let mut to_find = Vec<Color> = vec!["shiny gold".into()];
+    let mut to_find: Vec<Color> = vec!["shiny gold".into()];
+
+    let mut total: u32 = 0;
+    while let Some(color) = to_find.pop() {
+        let children = parents_to_children.get(&color);
+        match children {
+            None => (),
+            Some(children) => {
+                for (child, count) in children.iter() {
+                    total += count;
+                    to_find.extend(iter::repeat(child.to_string()).take(*count as usize));
+                }
+            }
+        }
+    }
+    println!("{} bags contained in my shiny gold bag", total);
 
     Ok(())
 }
