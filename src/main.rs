@@ -10,12 +10,12 @@ macro_rules! import {
     };
 }
 
-import!(one, two, three, four, five, six, seven, eight);
+import!(one, two, three, four, five, six, seven, eight, nine);
 
 arg_enum! {
     #[derive(Debug)]
     enum Day {
-        One, Two, Three, Four, Five, Six, Seven, Eight
+        One, Two, Three, Four, Five, Six, Seven, Eight, Nine
     }
 }
 
@@ -37,5 +37,6 @@ fn main() {
         Six => six(),
         Seven => seven(),
         Eight => eight(),
+        Nine => nine(),
     };
 }
